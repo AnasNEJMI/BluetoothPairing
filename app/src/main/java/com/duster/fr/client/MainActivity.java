@@ -275,10 +275,10 @@ public class MainActivity extends Activity  {
             }
 
             // Do work to manage the connection (in a separate thread)
-            mHandler.obtainMessage(SUCCESS_CONNECT,mmSocket);
+            mHandler.obtainMessage(SUCCESS_CONNECT,mmSocket).sendToTarget();
         }
 
-       
+
 
         /** Will cancel an in-progress connection, and close the socket */
         public void cancel() {
