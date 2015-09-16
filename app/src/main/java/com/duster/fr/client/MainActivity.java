@@ -124,7 +124,7 @@ public class MainActivity extends Activity  {
     /* Turning on Bluetooth */
 
     private void turnOnBT() {
-
+        Log.d(TAG,"turn on BT");
         Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
         startActivityForResult(intent,1);
     }
@@ -133,6 +133,7 @@ public class MainActivity extends Activity  {
     /* Getting the list of the paired devices */
 
     private void getPairedDevices() {
+        Log.d(TAG,"getting the paired devices");
 
         devicesArray = btAdapter.getBondedDevices();
         if(devicesArray.size()>0){
