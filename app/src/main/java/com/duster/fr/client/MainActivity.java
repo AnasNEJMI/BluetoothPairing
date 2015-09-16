@@ -74,8 +74,8 @@ public class MainActivity extends Activity  {
                         turnOnBT();
                     }
 
-                    getPairedDevices();
-                    startDiscovery();
+                    getPairedDevices();// getting the name and address of the paired devices
+                    startDiscovery(); // starting the discovery
                 }
 
             }
@@ -107,7 +107,7 @@ public class MainActivity extends Activity  {
         devicesArray = btAdapter.getBondedDevices();
         if(devicesArray.size()>0){
             for(BluetoothDevice device : devicesArray){
-                pairedDevices.add(device.getName()+"\n"+device.getAddress());
+                pairedDevices.add(device.getName()+"\n"+device.getAddress()); // name + address
 
             }
         }
@@ -120,7 +120,7 @@ public class MainActivity extends Activity  {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                
+
             }
         });
         listAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_expandable_list_item_1,0);
@@ -141,11 +141,11 @@ public class MainActivity extends Activity  {
                     String s="";
                     for(int a =0; a<pairedDevices.size();a++){
                         if(device.getName().equals(pairedDevices.get(a))){
-                            s = "(Paired)";
+                            s = "(Paired)"; //
                             break;
                         }
                     }
-                    listAdapter.add(device.getName()+"  "+s+"  "+"\n"+device.getAddress());
+                    listAdapter.add(device.getName()+"  "+s+"  "+"\n"+device.getAddress()); //if it is the paired device, add (Paired) to it's name + adress
 
 
                 }
@@ -157,7 +157,7 @@ public class MainActivity extends Activity  {
                 }
                 else if(BluetoothAdapter.ACTION_STATE_CHANGED.equals(action)){
                     if(btAdapter.getState()==btAdapter.STATE_OFF){
-                        turnOnBT();
+                        turnOnBT(); // if the state changes to 'off' turn on bluetooth
 
                     }
                 }
