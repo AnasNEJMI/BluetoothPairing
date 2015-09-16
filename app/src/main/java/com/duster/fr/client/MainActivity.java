@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,7 +31,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-public class MainActivity extends ListActivity {
+public class MainActivity extends Activity  {
 
     private static final String TAG = "BluetoothService";
     protected static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
@@ -58,7 +59,6 @@ public class MainActivity extends ListActivity {
         setContentView(R.layout.activity_main);
 
         connectNew = (Button) findViewById(R.id.scanBtn);
-        listView = (ListView) findViewById(R.id.listDevice);
 
         /* the connectNew button enables scanning for new devices */
 
@@ -116,6 +116,13 @@ public class MainActivity extends ListActivity {
 
     private void init() {
 
+        listView = (ListView) findViewById(R.id.listDevice);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                
+            }
+        });
         listAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_expandable_list_item_1,0);
         listView.setAdapter(listAdapter);
         btAdapter = BluetoothAdapter.getDefaultAdapter();
