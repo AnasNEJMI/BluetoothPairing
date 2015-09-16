@@ -60,6 +60,8 @@ public class MainActivity extends ListActivity {
         connectNew = (Button) findViewById(R.id.scanBtn);
         listView = (ListView) findViewById(R.id.listDevice);
 
+        /* the connectNew button enables scanning for new devices */
+
         connectNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
