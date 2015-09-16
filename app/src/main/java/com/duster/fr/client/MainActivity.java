@@ -57,18 +57,27 @@ public class MainActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        init();
-        if(btAdapter==null){
-            Toast.makeText(getApplicationContext(),"Bluetooth could not be detected",Toast.LENGTH_SHORT).show();
-            finish();
-        }else {
-            if(!btAdapter.isEnabled()){
-                turnOnBT();
-            }
+        connectNew = (Button) findViewById(R.id.scanBtn);
+        listView = (ListView) findViewById(R.id.listDevice);
 
-            getPairedDevices();
-            startDiscovery();
-        }
+        connectNew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                init();
+                if (btAdapter == null) {
+                    Toast.makeText(getApplicationContext(), "Bluetooth could not be detected", Toast.LENGTH_SHORT).show();
+                    finish();
+                } else {
+                    if (!btAdapter.isEnabled()) {
+                        turnOnBT();
+                    }
+
+                    getPairedDevices();
+                    startDiscovery();
+                }
+
+            }
+        });
 
     }
 
@@ -104,8 +113,7 @@ public class MainActivity extends ListActivity {
     }
 
     private void init() {
-        connectNew = (Button) findViewById(R.id.scanBtn);
-        listView = (ListView) findViewById(R.id.listDevice);
+
         listAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_expandable_list_item_1,0);
         listView.setAdapter(listAdapter);
         btAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -213,7 +221,7 @@ public class MainActivity extends ListActivity {
             }
 
             // Do work to manage the connection (in a separate thread)
-            MainActivity.this.Connected(mmSocket);
+           // MainActivity.this.Connected(mmSocket);
         }
 
         /** Will cancel an in-progress connection, and close the socket */
