@@ -215,14 +215,14 @@ public class BluetoothService {
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            activity.printValue(testInt++);
+                           // activity.printValue(testInt++);
                         }
                     });
                 }else{
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            activity.printValue(100000);
+                           // activity.printValue(100000);
                         }
                     });
                 }
