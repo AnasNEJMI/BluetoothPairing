@@ -109,9 +109,9 @@ public class MainActivity extends Activity  {
                 }
 
             }
-        });
+       });
 
-    }
+   }
 
     /* Starting discovery */
 
@@ -169,6 +169,7 @@ public class MainActivity extends Activity  {
         btAdapter = BluetoothAdapter.getDefaultAdapter();
         pairedDevices = new ArrayList<String>();
         filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+        devices =new ArrayList<BluetoothDevice>();
 
 
         /* Setting up the broadcast receiver */
@@ -179,14 +180,7 @@ public class MainActivity extends Activity  {
                 if(BluetoothDevice.ACTION_FOUND.equals(action)){
                     BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                     devices.add(device);
-                    String s="";
-                    for(int a =0; a<pairedDevices.size();a++){
-                        if(device.getName().equals(pairedDevices.get(a))){
-                            s = "(Paired)"; //
-                            break;
-                        }
-                    }
-                    listAdapter.add(device.getName()+"  "+s+"  "+"\n"+device.getAddress()); //if it is the paired device, add (Paired) to it's name + adress
+                    listAdapter.add(device.getName()+"\n"+device.getAddress()); //if it is the paired device, add (Paired) to it's name + adress
 
 
                 }
@@ -218,6 +212,7 @@ public class MainActivity extends Activity  {
     @Override
     protected void onPause() {
         super.onPause();
+        if(receiver!=null)
         unregisterReceiver(receiver);
     }
 
