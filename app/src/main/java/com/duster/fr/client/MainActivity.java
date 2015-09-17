@@ -1,6 +1,7 @@
 package com.duster.fr.client;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
@@ -41,6 +42,11 @@ public class MainActivity extends Activity  {
 
     protected static final int MESSAGE_READ =1;
 
+    public static final int STATE_NONE = 0;       // we're doing nothing
+    public static final int STATE_LISTEN = 1;     // now listening for incoming connections
+    public static final int STATE_CONNECTING = 2; // now initiating an outgoing connection
+    public static final int STATE_CONNECTED = 3;
+
     ArrayAdapter<String> listAdapter;
     Button connectNew;
     ListView listView;
@@ -60,7 +66,7 @@ public class MainActivity extends Activity  {
             switch (msg.what){
                 case SUCCESS_CONNECT:
                     ConnectedThread connectedThread = new ConnectedThread((BluetoothSocket)msg.obj);
-                    Toast.makeText(getApplicationContext(),"CONNECT",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"You have successfully connected",Toast.LENGTH_SHORT).show();
 
                     String s ="Successfully connected";
                     connectedThread.write(s.getBytes());
@@ -71,6 +77,8 @@ public class MainActivity extends Activity  {
                     Toast.makeText(getApplicationContext(),string,Toast.LENGTH_SHORT).show();
                     break;
             }
+
+
 
         }
 
@@ -86,7 +94,7 @@ public class MainActivity extends Activity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.device_list_fragment);
 
         connectNew = (Button) findViewById(R.id.scanBtn);
 
@@ -107,6 +115,8 @@ public class MainActivity extends Activity  {
                     getPairedDevices();// getting the name and address of the paired devices
                     startDiscovery(); // starting the discovery
                 }
+
+
 
             }
        });
@@ -152,16 +162,18 @@ public class MainActivity extends Activity  {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2 , long arg3) {
 
-                    if(btAdapter.isDiscovering()){
-                        btAdapter.cancelDiscovery();
-                    }
-                    if(listAdapter.getItem(arg2).contains("Paired")){
-                        BluetoothDevice selectedDevice = devices.get(arg2);
-                        ConnectThread connect = new ConnectThread(selectedDevice);
-                        connect.start();
-                    }else{
-                        Toast.makeText(getApplicationContext(),"device is not paired",Toast.LENGTH_SHORT).show();
-                    }
+                if(btAdapter.isDiscovering()){
+                    btAdapter.cancelDiscovery();
+                }
+                BluetoothDevice selectedDevice = devices.get(arg2);
+                String name = selectedDevice.getName();
+                ConnectThread connect = new ConnectThread(selectedDevice);
+                connect.start();
+
+                Intent i = new Intent(getApplicationContext(),chatActivity.class);
+                i.putExtra("device_name",name);
+                startActivity(i);
+
 
             }
         });
@@ -181,7 +193,14 @@ public class MainActivity extends Activity  {
                 if(BluetoothDevice.ACTION_FOUND.equals(action)){
                     BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                     devices.add(device);
-                    listAdapter.add(device.getName()+"\n"+device.getAddress()); //if it is the paired device, add (Paired) to it's name + adress
+                    if(device.getName()==null){
+
+                        listAdapter.add("Unidentified Device"+"\n"+device.getAddress()); //if it is the paired device, add (Paired) to it's name + adress
+
+                    }else {
+                        listAdapter.add(device.getName()+"\n"+device.getAddress()); //if it is the paired device, add (Paired) to it's name + adress
+                    }
+
 
 
                 }
@@ -268,6 +287,9 @@ public class MainActivity extends Activity  {
 
             // Do work to manage the connection (in a separate thread)
             mHandler.obtainMessage(SUCCESS_CONNECT,mmSocket).sendToTarget();
+
+
+
         }
 
 
