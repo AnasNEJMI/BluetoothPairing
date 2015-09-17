@@ -48,7 +48,7 @@ public class MainActivity extends Activity  {
     public static final int STATE_CONNECTED = 3;
 
     ArrayAdapter<String> listAdapter;
-    Button connectNew;
+    Button scanBtn;
     ListView listView;
     BluetoothAdapter btAdapter;
     ArrayList<BluetoothDevice> devices;
@@ -94,13 +94,13 @@ public class MainActivity extends Activity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.device_list_fragment);
+        setContentView(R.layout.device_list);
 
-        connectNew = (Button) findViewById(R.id.scanBtn);
+        scanBtn = (Button) findViewById(R.id.scanBtn);
 
-        /* the connectNew button enables scanning for new devices */
+        /* the scanBtn button enables scanning for new devices */
 
-        connectNew.setOnClickListener(new View.OnClickListener() {
+        scanBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 init();
@@ -170,6 +170,7 @@ public class MainActivity extends Activity  {
                 ConnectThread connect = new ConnectThread(selectedDevice);
                 connect.start();
 
+                //If the pairing is established, move to the other activity where we can send and receive data
                 Intent i = new Intent(getApplicationContext(),chatActivity.class);
                 i.putExtra("device_name",name);
                 startActivity(i);
@@ -177,7 +178,7 @@ public class MainActivity extends Activity  {
 
             }
         });
-        listAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_expandable_list_item_1,0);
+        listAdapter = new ArrayAdapter<String>(this,R.layout.device_name,0);
         listView.setAdapter(listAdapter);
         btAdapter = BluetoothAdapter.getDefaultAdapter();
         pairedDevices = new ArrayList<String>();
@@ -287,6 +288,7 @@ public class MainActivity extends Activity  {
 
             // Do work to manage the connection (in a separate thread)
             mHandler.obtainMessage(SUCCESS_CONNECT,mmSocket).sendToTarget();
+
 
 
 
