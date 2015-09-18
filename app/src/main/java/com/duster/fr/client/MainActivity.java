@@ -70,7 +70,7 @@ public class MainActivity extends Activity  {
     private ArrayList<String> mConversationThread;
 
     //String buffer for outgoing messages
-    private StringBuffer mOutStringBuffer;
+    private StringBuffer mOutStringBuffer = new StringBuffer();
 
     //Local Bluetooth adapter
     private BluetoothAdapter mBtAdapter = null;
@@ -132,7 +132,6 @@ public class MainActivity extends Activity  {
         mBtAdapter = BluetoothAdapter.getDefaultAdapter();
         scanBtn = (Button) findViewById(R.id.scanBtn);
         sensorNumber = (EditText) findViewById(R.id.sensor_number);
-        sendRequestBtn = (Button) findViewById(R.id.request_data);
 
         // Set sensor_number and sendRequestBtn and sensorNumber to invisible
         //sensorNumber.setVisibility(View.INVISIBLE);
@@ -174,6 +173,7 @@ public class MainActivity extends Activity  {
             }
        });
 
+
    }
 
     /* Starting discovery */
@@ -214,8 +214,14 @@ public class MainActivity extends Activity  {
                 mService.connect(selectedDevice);
 
                 //If the pairing is established, move to the other activity where we can send and receive data
-                //sensorNumber.setVisibility(View.VISIBLE);
-                //sendRequestBtn.setVisibility(View.VISIBLE);
+                sendRequestBtn = (Button) findViewById(R.id.sendBtn);
+                sendRequestBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String message= sensorNumber.getText().toString();
+                        sendMessage(message);
+                    }
+                });
 
 
 
