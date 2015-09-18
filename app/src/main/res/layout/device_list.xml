@@ -10,25 +10,58 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-        <TextView
-            android:id="@+id/title_paired_devices"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="20dp"
-            android:gravity="center"
-            android:text="Paired Devices"/>
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/title_paired_devices"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="20dp"
+                android:layout_weight="1"
+                android:text="Paired Devices"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Scan"
+                android:layout_weight="1"
+                android:id="@+id/scanBtn" />
 
-        <ListView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/listDevice"
-            android:layout_weight="1" />
 
-        <Button
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Scan"
-            android:id="@+id/scanBtn" />
+            android:layout_weight="1">
+
+            <ListView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/listDevice" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="30dp">
+
+            <EditText
+                android:id="@+id/sensor_number"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                />
+
+            <Button
+                android:id="@+id/sendBtn"
+                android:layout_height="match_parent"
+                android:text="Request Data from Server App"
+                android:layout_width="match_parent"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
