@@ -62,7 +62,6 @@ public class MainActivity extends ActionBarActivity {
 
     private Button scanBtn;
     private ListView listView;
-    private Button sendRequestBtn;
     private TextView textView;
 
     //Name of the connected Device
@@ -136,20 +135,12 @@ public class MainActivity extends ActionBarActivity {
         textView = (TextView) findViewById(R.id.textView);
 
 
-        // Set sensor_number and sendRequestBtn and sensorNumber to invisible
-        //sensorNumber.setVisibility(View.INVISIBLE);
-        //sendRequestBtn.setVisibility(View.INVISIBLE);
-        /* the scanBtn button enables scanning for new devices */
 
         scanBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if(DEBUG) Log.d(TAG, "+++ OnClick scanBtn +++");
-
-                // If sendRequestBtn and sensorNumber are visible, set to invisible
-                //if(sensorNumber.getVisibility()==View.VISIBLE){sensorNumber.setVisibility(View.INVISIBLE);}
-                //if(sendRequestBtn.getVisibility()==View.VISIBLE){sendRequestBtn.setVisibility(View.INVISIBLE);}
 
                 init();
 
@@ -220,18 +211,6 @@ public class MainActivity extends ActionBarActivity {
 
 
                 //If the pairing is established, move to the other activity where we can send and receive data
-
-
-                sendRequestBtn = (Button) findViewById(R.id.sendBtn);
-                sendRequestBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //String message = sensorNumber.getText().toString();
-                        //sendMessage(message);
-                        String message = new String("Connected");
-                        sendMessage(message);
-                    }
-                });
 
 
             }
