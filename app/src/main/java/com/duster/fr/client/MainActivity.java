@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Message;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -33,7 +35,7 @@ import java.util.Set;
 import java.util.UUID;
 import android.os.Handler;
 
-public class MainActivity extends Activity  {
+public class MainActivity extends ActionBarActivity {
 
 
     // for Debuging purposes
@@ -60,8 +62,8 @@ public class MainActivity extends Activity  {
 
     private Button scanBtn;
     private ListView listView;
-    private EditText sensorNumber;
     private Button sendRequestBtn;
+    private TextView textView;
 
     //Name of the connected Device
     private String mConnectedDeviceName = null;
@@ -131,7 +133,8 @@ public class MainActivity extends Activity  {
         //Getting the local Bluetooth Adapter and the layouts for managing scan
         mBtAdapter = BluetoothAdapter.getDefaultAdapter();
         scanBtn = (Button) findViewById(R.id.scanBtn);
-        sensorNumber = (EditText) findViewById(R.id.sensor_number);
+        textView = (TextView) findViewById(R.id.textView);
+
 
         // Set sensor_number and sendRequestBtn and sensorNumber to invisible
         //sensorNumber.setVisibility(View.INVISIBLE);
@@ -149,6 +152,7 @@ public class MainActivity extends Activity  {
                 //if(sendRequestBtn.getVisibility()==View.VISIBLE){sendRequestBtn.setVisibility(View.INVISIBLE);}
 
                 init();
+
                 if (mBtAdapter == null) {
                     Toast.makeText(getApplicationContext(), "Bluetooth could not be detected", Toast.LENGTH_SHORT).show();
                     finish();
@@ -204,29 +208,38 @@ public class MainActivity extends Activity  {
         listView = (ListView) findViewById(R.id.listDevice);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2 , long arg3) {
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 
-                if(mBtAdapter.isDiscovering()){
+                if (mBtAdapter.isDiscovering()) {
                     mBtAdapter.cancelDiscovery();
                 }
                 BluetoothDevice selectedDevice = devices.get(arg2);
                 String name = selectedDevice.getName();
                 mService.connect(selectedDevice);
+                //mService.accept();
+
 
                 //If the pairing is established, move to the other activity where we can send and receive data
+
+
                 sendRequestBtn = (Button) findViewById(R.id.sendBtn);
                 sendRequestBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String message= sensorNumber.getText().toString();
+                        //String message = sensorNumber.getText().toString();
+                        //sendMessage(message);
+                        String message = new String("Connected");
                         sendMessage(message);
                     }
                 });
 
 
-
             }
         });
+
+
+
+
         listAdapter = new ArrayAdapter<String>(this,R.layout.device_name,0);
         listView.setAdapter(listAdapter);
         mBtAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -309,7 +322,7 @@ public class MainActivity extends Activity  {
             mService.write(send);
             // Reset out string buffer to zero and clear the edit text field
             mOutStringBuffer.setLength(0);
-            sensorNumber.setText(mOutStringBuffer);
+            //sensorNumber.setText(mOutStringBuffer);
         }
     }
 
@@ -343,12 +356,13 @@ public class MainActivity extends Activity  {
                     byte[] writeBuf = (byte[]) msg.obj;
                     // construct a string from the buffer
                     String writeMessage = new String(writeBuf);
-                    //mConversationArrayAdapter.add("Me:  " + writeMessage);
                     break;
                 case MESSAGE_READ:
                     byte[] readBuf = (byte[]) msg.obj;
                     // construct a string from the valid bytes in the buffer
                     String readMessage = new String(readBuf, 0, msg.arg1);
+
+                    textView.setText(readMessage);
                     //mConversationArrayAdapter.add(mConnectedDeviceName+":  " + readMessage);
                     break;
                 case MESSAGE_DEVICE_NAME:

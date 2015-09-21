@@ -1,5 +1,6 @@
 package com.duster.fr.client;
 
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothServerSocket;
@@ -11,6 +12,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.UUID;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -124,6 +126,12 @@ public class BluetoothService {
 
         setState(STATE_NONE);
 
+    }
+    public synchronized void accept() {
+        Log.d(TAG, "accept");
+        stop();
+        mAcceptThread = new AcceptThread();
+        mAcceptThread.start();
     }
 
     // To write to the ConnectedThread in an unsynchronized manner
@@ -348,6 +356,12 @@ public class BluetoothService {
                 Log.e(TAG, "close() of connect socket failed", e);
             }
         }
+    }
+
+    protected void makeDiscoverable(Activity activity){
+        Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+        discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION,60000);
+        activity.startActivity(discoverableIntent);
     }
 
 
