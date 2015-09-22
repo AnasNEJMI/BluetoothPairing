@@ -63,6 +63,8 @@ public class MainActivity extends ActionBarActivity {
     private Button scanBtn;
     private ListView listView;
     private TextView textView;
+    private EditText infoRequested;
+    private Button requestBtn;
 
     //Name of the connected Device
     private String mConnectedDeviceName = null;
@@ -216,6 +218,18 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
+        requestBtn = (Button) findViewById(R.id.requestBtn);
+        infoRequested = (EditText) findViewById(R.id.infoRequested);
+
+        requestBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String message = infoRequested.getText().toString();
+                if(message.equals(""))
+                {Toast.makeText(getApplicationContext(),"type something to request",Toast.LENGTH_SHORT).show();}
+                else{sendMessage(message);}
+            }
+        });
 
 
 
@@ -340,7 +354,7 @@ public class MainActivity extends ActionBarActivity {
                     byte[] readBuf = (byte[]) msg.obj;
                     // construct a string from the valid bytes in the buffer
                     String readMessage = new String(readBuf, 0, msg.arg1);
-
+                    textView.setText("");
                     textView.setText(readMessage);
                     //mConversationArrayAdapter.add(mConnectedDeviceName+":  " + readMessage);
                     break;

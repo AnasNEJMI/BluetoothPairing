@@ -48,13 +48,36 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1.5">
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:paddingTop="20dp">
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:text="Request"
+                    android:id="@+id/requestBtn"/>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:id="@+id/infoRequested"/>
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/textView"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="2"
+                android:gravity="center"/>
 
 
 
