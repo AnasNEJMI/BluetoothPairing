@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -65,6 +66,12 @@ public class MainActivity extends ActionBarActivity {
     private TextView textView;
     private EditText infoRequested;
     private Button requestBtn;
+
+    //Layouts
+
+    private LinearLayout requestLayout;
+    private LinearLayout scanBtnLayout;
+    private LinearLayout listViewLayout;
 
     //Name of the connected Device
     private String mConnectedDeviceName = null;
@@ -135,6 +142,16 @@ public class MainActivity extends ActionBarActivity {
         mBtAdapter = BluetoothAdapter.getDefaultAdapter();
         scanBtn = (Button) findViewById(R.id.scanBtn);
         textView = (TextView) findViewById(R.id.textView);
+
+
+
+        //Linear Layouts
+
+        requestLayout = (LinearLayout) findViewById(R.id.requestLayout);
+        scanBtnLayout= (LinearLayout) findViewById(R.id.scanBtnLayout);
+        listViewLayout = (LinearLayout) findViewById(R.id.listViewLayout);
+
+        requestLayout.setVisibility(View.GONE);
 
 
 
@@ -209,6 +226,13 @@ public class MainActivity extends ActionBarActivity {
                 BluetoothDevice selectedDevice = devices.get(arg2);
                 String name = selectedDevice.getName();
                 mService.connect(selectedDevice);
+
+                if(mService.getState()==BluetoothService.STATE_CONNECTING){
+                    requestLayout.setVisibility(View.VISIBLE);
+                    scanBtnLayout.setVisibility(View.INVISIBLE);
+                    listViewLayout.setVisibility(View.INVISIBLE);
+                }
+
                 //mService.accept();
 
 
@@ -337,10 +361,19 @@ public class MainActivity extends ActionBarActivity {
                             /***********/
                             break;
                         case BluetoothService.STATE_CONNECTING:
+                            scanBtnLayout.setVisibility(View.VISIBLE);
+                            listViewLayout.setVisibility(View.VISIBLE);
+                            requestLayout.setVisibility(View.GONE);
                             /***********/
                             break;
                         case BluetoothService.STATE_LISTEN:
+                            scanBtnLayout.setVisibility(View.VISIBLE);
+                            listViewLayout.setVisibility(View.VISIBLE);
+                            requestLayout.setVisibility(View.GONE);
                         case BluetoothService.STATE_NONE:
+                            scanBtnLayout.setVisibility(View.VISIBLE);
+                            listViewLayout.setVisibility(View.VISIBLE);
+                            requestLayout.setVisibility(View.GONE);
                             /**********/
                             break;
                     }
